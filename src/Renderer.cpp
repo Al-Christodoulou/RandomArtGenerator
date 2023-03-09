@@ -29,7 +29,9 @@ void Renderer::initBitmap()
 
 Renderer::Renderer(HWND hWnd, unsigned int buffer_width, unsigned int buffer_height)
 	: m_bufferdims{ buffer_width, buffer_height }, m_attachedWndHandle{ hWnd }
-{}
+{
+	initBitmap();
+}
 
 void Renderer::setPixel(const Pixel& pixel, unsigned int row, unsigned int column)
 {
