@@ -18,7 +18,7 @@ private:
 public:
 	// the renderer needs a window handle to "attach" to (otherwise the rendering
 	// & bitmap creation can't happen)
-	Renderer(HWND hWnd, unsigned int width, unsigned int height);
+	Renderer(HWND hWnd, unsigned int buffer_width, unsigned int buffer_height);
 	void setPixel(const Pixel& pixel, unsigned int row, unsigned int column);
 	void render();
 
