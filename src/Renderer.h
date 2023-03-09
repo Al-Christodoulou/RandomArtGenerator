@@ -20,7 +20,7 @@ public:
 	// & bitmap creation can't happen)
 	Renderer(HWND hWnd, unsigned int width, unsigned int height);
 	void setPixel(const Pixel& pixel, unsigned int row, unsigned int column);
-	void render(HWND hWnd);
+	void render();
 
 	struct BufferDimensions
 	{
