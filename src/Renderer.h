@@ -12,10 +12,13 @@ class Renderer
 private:
 	HBITMAP m_hBitmap{ nullptr };
 	RGBQUAD* m_bitmapData{ nullptr };
+	HWND m_attachedWndHandle{ nullptr };
 
 	void initBitmap();
 public:
-	Renderer(unsigned int width, unsigned int height);
+	// the renderer needs a window handle to "attach" to (otherwise the rendering
+	// & bitmap creation can't happen)
+	Renderer(HWND hWnd, unsigned int width, unsigned int height);
 	void setPixel(const Pixel& pixel, unsigned int row, unsigned int column);
 	void render(HWND hWnd);
 

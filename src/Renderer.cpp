@@ -27,8 +27,8 @@ void Renderer::initBitmap()
 	)*/
 }
 
-Renderer::Renderer(unsigned int width, unsigned int height)
-	: m_bufferdims{ width, height }
+Renderer::Renderer(HWND hWnd, unsigned int buffer_width, unsigned int buffer_height)
+	: m_bufferdims{ buffer_width, buffer_height }, m_attachedWndHandle{ hWnd }
 {}
 
 void Renderer::setPixel(const Pixel& pixel, unsigned int row, unsigned int column)
@@ -38,9 +38,9 @@ void Renderer::setPixel(const Pixel& pixel, unsigned int row, unsigned int colum
 	m_bitmapData[column + row * m_bufferdims.width].rgbBlue = pixel.blue;
 }
 
-void Renderer::render(HWND hWnd)
+void Renderer::render()
 {
 	PAINTSTRUCT ps;
-	HDC hdc{ BeginPaint(hWnd, &ps) };
-	EndPaint(hWnd, &ps);
+	HDC hdc{ BeginPaint(m_attachedWndHandle, &ps) };
+	EndPaint(m_attachedWndHandle, &ps);
 }
