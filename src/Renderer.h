@@ -20,8 +20,12 @@ public:
 	// the renderer needs a window handle to "attach" to (otherwise the rendering
 	// & bitmap creation can't happen)
 	Renderer(HWND hWnd, unsigned int buffer_width, unsigned int buffer_height);
+	Renderer(Renderer&&) noexcept;
 	void setPixel(const Pixel& pixel, unsigned int row, unsigned int column);
 	void render();
+	void attachWindowHandle(HWND hWnd);
+
+	void operator=(const Renderer&) = delete;
 
 	struct BufferDimensions
 	{

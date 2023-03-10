@@ -1,5 +1,24 @@
 #include "Renderer.h"
 
+
+Renderer::Renderer(HWND hWnd, unsigned int buffer_width, unsigned int buffer_height)
+	: m_bufferdims{ buffer_width, buffer_height }, m_attachedWndHandle{ hWnd }
+{
+	initBitmap();
+}
+
+Renderer::Renderer(Renderer&& renderer) noexcept
+	: m_bufferdims{ renderer.m_bufferdims }
+{
+	m_hBitmap = renderer.m_hBitmap;
+	renderer.m_hBitmap = nullptr;
+	m_bitmapInfo = renderer.m_bitmapInfo;
+	m_bitmapData = renderer.m_bitmapData;
+	renderer.m_bitmapData = nullptr;
+	m_attachedWndHandle = renderer.m_attachedWndHandle;
+	renderer.m_attachedWndHandle = nullptr;
+}
+
 void Renderer::initBitmap()
 {
 	BITMAPINFOHEADER bmpInfoHdr{};
@@ -31,12 +50,6 @@ void Renderer::initBitmap()
 	ReleaseDC(nullptr, hdc);
 }
 
-Renderer::Renderer(HWND hWnd, unsigned int buffer_width, unsigned int buffer_height)
-	: m_bufferdims{ buffer_width, buffer_height }, m_attachedWndHandle{ hWnd }
-{
-	initBitmap();
-}
-
 void Renderer::setPixel(const Pixel& pixel, unsigned int row, unsigned int column)
 {
 	if (row <= m_bufferdims.height && column <= m_bufferdims.width)
@@ -63,4 +76,11 @@ void Renderer::render()
 	}
 
 	EndPaint(m_attachedWndHandle, &ps);
+}
+
+// only allowed if the renderer doesn't already have a window attached to it
+void Renderer::attachWindowHandle(HWND hWnd)
+{
+	if (!m_attachedWndHandle)
+		m_attachedWndHandle = hWnd;
 }
