@@ -131,6 +131,7 @@ void Canvas::reSeedChoices()
 				m_choices[i][j] = static_cast<unsigned int>(Random::get(0, 4));
 		}
 	}
+	InvalidateRgn(m_windowHandle, NULL, TRUE);
 }
 
 bool Canvas::initRenderer()
@@ -210,7 +211,7 @@ UINT_PTR Canvas::runMessageLoop(int nShowCmd)
 		// calls windowProcedure behind the scenes
 		DispatchMessage(&msg);
 		// forces the window to be re-drawn, sending a WM_PAINT event
-		RedrawWindow(m_windowHandle, NULL, NULL, RDW_INVALIDATE);
+		//RedrawWindow(m_windowHandle, NULL, NULL, RDW_INVALIDATE);
 	}
 	return msg.wParam;
 }
@@ -246,6 +247,10 @@ LRESULT CALLBACK Canvas::windowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPA
 	{
 	case WM_PAINT:
 		canvas->paintWindow();
+		break;
+	case WM_SIZE:
+	case WM_SIZING:
+		InvalidateRgn(canvas->m_windowHandle, NULL, TRUE);
 		break;
 	case WM_LBUTTONDOWN:
 		canvas->leftClick();
