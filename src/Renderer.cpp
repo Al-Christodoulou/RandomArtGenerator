@@ -39,9 +39,12 @@ Renderer::Renderer(HWND hWnd, unsigned int buffer_width, unsigned int buffer_hei
 
 void Renderer::setPixel(const Pixel& pixel, unsigned int row, unsigned int column)
 {
-	m_bitmapData[column + row * m_bufferdims.width].rgbRed = pixel.red;
-	m_bitmapData[column + row * m_bufferdims.width].rgbGreen = pixel.green;
-	m_bitmapData[column + row * m_bufferdims.width].rgbBlue = pixel.blue;
+	if (row <= m_bufferdims.height && column <= m_bufferdims.width)
+	{
+		m_bitmapData[column + row * m_bufferdims.width].rgbRed = pixel.red;
+		m_bitmapData[column + row * m_bufferdims.width].rgbGreen = pixel.green;
+		m_bitmapData[column + row * m_bufferdims.width].rgbBlue = pixel.blue;
+	}
 }
 
 void Renderer::render()
