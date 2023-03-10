@@ -10,12 +10,20 @@ private:
 	static constexpr inline LPCWSTR cWndClassName{ L"CanvasWindow" };
 	int m_nShowCmd{};
 	Renderer m_renderer;
+
+	// used by getRandExpression & getRandFilter
+	unsigned int m_choices[3][3]{};
+
 public:
 	Canvas();
 	bool initialize(HINSTANCE hInstance, int nShowCmd);
 	void beginDrawing();
 
 private:
+	unsigned int getRandExpression(unsigned int i, unsigned int j, unsigned int choiceIndex);
+	unsigned int getRandFilter(unsigned int input, unsigned int choiceIndex, unsigned int secondIndex);
+	void reSeedChoices();
+
 	bool initRenderer();
 	void paintWindow();
 	void click();

@@ -1,4 +1,5 @@
 #include <cmath>
+#include "Random.h"
 #include "Canvas.h"
 
 //#define U8(n) static_cast<uint8_t>(n)
@@ -36,6 +37,7 @@ bool Canvas::initialize(HINSTANCE hInstance, int nShowCmd)
 
 void Canvas::beginDrawing()
 {
+	reSeedChoices();
 	runMessageLoop(m_nShowCmd);
 }
 
@@ -49,7 +51,13 @@ void Canvas::paintWindow()
 		{
 			//m_renderer.setPixel({ U8(i), U8(j), U8(U8(i) - U8(j)) }, j, i);
 			//m_renderer.setPixel({ U8(i), U8(j), getSum(U8(i), U8(j)) }, j, i);
-			m_renderer.setPixel({ toU8(i * sqrt(j)), toU8(j / CDIVISOR_HEIGHT), toU8(sqrt(i) * j) }, j, i);
+			//m_renderer.setPixel({ toU8(i * sqrt(j)), toU8(j / CDIVISOR_HEIGHT), toU8(sqrt(i) * j) }, j, i);
+			Pixel pixel{
+				toU8(getRandExpression(i, j, 0)),
+				toU8(getRandExpression(i, j, 1)),
+				toU8(getRandExpression(i, j, 2))
+			};
+			m_renderer.setPixel(pixel, j, i);
 
 			//m_renderer.setPixel(greenPixel, j + 50, i);
 			//m_renderer.setPixel(redPixel, j + 100, i);
@@ -58,6 +66,71 @@ void Canvas::paintWindow()
 		}
 	}
 	m_renderer.render();
+}
+
+// receives i,j and returns a random expression after the two
+// parameters are passed through a random filter. the ends
+// results can look like:
+// i * sqrt(j), sqrt(i) * log(j), i * j * j, etc.
+unsigned int Canvas::getRandExpression(unsigned int i, unsigned int j, unsigned int choiceIndex)
+{
+	unsigned int filteredI{ getRandFilter(i, choiceIndex, 1) };
+	unsigned int filteredJ{ getRandFilter(j, choiceIndex, 2) };
+	switch (m_choices[choiceIndex][0])
+	{
+	case 0:
+		return filteredI + filteredJ;
+	case 1:
+		return filteredI - filteredJ;
+	case 2:
+		return filteredI * filteredJ;
+	case 3:
+		if (filteredJ == 0)
+			return filteredI;
+		else
+			return filteredI / filteredJ;
+	default: // shouldn't happen
+		return 0;
+	}
+}
+
+// receives an int and returns a random filter passed through it,
+// such as the square root of input, the logarithm, the input
+// squared and so on
+unsigned int Canvas::getRandFilter(unsigned int input, unsigned int choiceIndex, unsigned int secondIndex)
+{
+	//unsigned int choice{ static_cast<unsigned int>(Random::get(0, 4)) };
+	switch (m_choices[choiceIndex][secondIndex])
+	{
+	case 0:
+		return input;
+	case 1:
+		return sqrt(input);
+	case 2:
+		return log(input);
+	case 3:
+		return log10(input);
+	case 4:
+		return input * input;
+	default: // shouldn't happen
+		return 0;
+	}
+}
+
+void Canvas::reSeedChoices()
+{
+	for (int i{ 0 }; i < 3; i++)
+	{
+		for (int j{ 0 }; j < 3; j++)
+		{
+			// if j == 0, then this is the first random choice in
+			// getRandExpression(). the other two are getRandFilter's choices
+			if (j == 0)
+				m_choices[i][j] = static_cast<unsigned int>(Random::get(0, 3));
+			else
+				m_choices[i][j] = static_cast<unsigned int>(Random::get(0, 4));
+		}
+	}
 }
 
 bool Canvas::initRenderer()
@@ -70,7 +143,7 @@ bool Canvas::initRenderer()
 
 void Canvas::click()
 {
-
+	reSeedChoices();
 }
 
 bool Canvas::registerWindowClass(HINSTANCE hInstance)
