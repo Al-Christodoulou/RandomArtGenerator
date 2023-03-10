@@ -1,4 +1,19 @@
+#include <cmath>
 #include "Canvas.h"
+
+//#define U8(n) static_cast<uint8_t>(n)
+template <typename T>
+constexpr uint8_t toU8(T n) { return static_cast<uint8_t>(n); }
+
+constexpr unsigned int CBUFFER_WIDTH{ 512 };
+constexpr unsigned int CBUFFER_HEIGHT{ 512 };
+
+constexpr float CDIVISOR_WIDTH{ static_cast<float>(CBUFFER_WIDTH) / 255 };
+constexpr float CDIVISOR_HEIGHT{ static_cast<float>(CBUFFER_HEIGHT) / 255 };
+
+Canvas::Canvas()
+	: m_renderer{ nullptr, CBUFFER_WIDTH, CBUFFER_HEIGHT }
+{}
 
 bool Canvas::initialize(HINSTANCE hInstance, int nShowCmd)
 {
@@ -14,6 +29,8 @@ bool Canvas::initialize(HINSTANCE hInstance, int nShowCmd)
 	}
 	m_nShowCmd = nShowCmd;
 	m_successfully_initialized = true;
+	if (!initRenderer())
+		return false;
 	return true;
 }
 
@@ -24,7 +41,31 @@ void Canvas::beginDrawing()
 
 void Canvas::paintWindow()
 {
+	Pixel redPixel{ 255, 0, 0 };
+	Pixel greenPixel{ 0, 255, 0 };
+	for (unsigned int i{ 0 }; i < m_renderer.m_bufferdims.width; i++)
+	{
+		for (unsigned int j{ 0 }; j < m_renderer.m_bufferdims.height; j++)
+		{
+			//m_renderer.setPixel({ U8(i), U8(j), U8(U8(i) - U8(j)) }, j, i);
+			//m_renderer.setPixel({ U8(i), U8(j), getSum(U8(i), U8(j)) }, j, i);
+			m_renderer.setPixel({ toU8(i * sqrt(j)), toU8(j / CDIVISOR_HEIGHT), toU8(sqrt(i) * j) }, j, i);
 
+			//m_renderer.setPixel(greenPixel, j + 50, i);
+			//m_renderer.setPixel(redPixel, j + 100, i);
+			//m_renderer.setPixel(greenPixel, j + 150, i);
+			//m_renderer.setPixel({ U8(i), U8(j), U8(U8(i) + U8(j) / 2) }, i, j);
+		}
+	}
+	m_renderer.render();
+}
+
+bool Canvas::initRenderer()
+{
+	if (!m_successfully_initialized)
+		return false;
+	m_renderer.attachWindowHandle(m_windowHandle);
+	return true;
 }
 
 void Canvas::click()
