@@ -52,7 +52,7 @@ void Renderer::initBitmap()
 
 void Renderer::setPixel(const Pixel& pixel, unsigned int row, unsigned int column)
 {
-	if (row <= m_bufferdims.height && column <= m_bufferdims.width)
+	if (row <= m_bufferdims.height - 1 && column <= m_bufferdims.width - 1)
 	{
 		m_bitmapData[column + row * m_bufferdims.width].rgbRed = pixel.red;
 		m_bitmapData[column + row * m_bufferdims.width].rgbGreen = pixel.green;
