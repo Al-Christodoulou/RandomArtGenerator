@@ -13,6 +13,7 @@ private:
 
 	// used by getRandExpression & getRandFilter
 	unsigned int m_choices[3][3]{};
+	bool m_regenerateImage{ false };
 public:
 	Canvas();
 	bool initialize(HINSTANCE hInstance, int nShowCmd);
@@ -24,6 +25,7 @@ private:
 	void reSeedChoices();
 
 	bool initRenderer();
+	void generateImage();
 	void paintWindow();
 	void leftClick();
 	void rightClick();

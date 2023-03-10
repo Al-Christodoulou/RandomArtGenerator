@@ -41,30 +41,27 @@ void Canvas::beginDrawing()
 	runMessageLoop(m_nShowCmd);
 }
 
-void Canvas::paintWindow()
+void Canvas::generateImage()
 {
-	Pixel redPixel{ 255, 0, 0 };
-	Pixel greenPixel{ 0, 255, 0 };
 	for (unsigned int i{ 0 }; i < m_renderer.m_bufferdims.width; i++)
 	{
 		for (unsigned int j{ 0 }; j < m_renderer.m_bufferdims.height; j++)
 		{
-			//m_renderer.setPixel({ U8(i), U8(j), U8(U8(i) - U8(j)) }, j, i);
-			//m_renderer.setPixel({ U8(i), U8(j), getSum(U8(i), U8(j)) }, j, i);
-			//m_renderer.setPixel({ toU8(i * sqrt(j)), toU8(j / CDIVISOR_HEIGHT), toU8(sqrt(i) * j) }, j, i);
 			Pixel pixel{
 				toU8(getRandExpression(i, j, 0)),
 				toU8(getRandExpression(i, j, 1)),
 				toU8(getRandExpression(i, j, 2))
 			};
 			m_renderer.setPixel(pixel, j, i);
-
-			//m_renderer.setPixel(greenPixel, j + 50, i);
-			//m_renderer.setPixel(redPixel, j + 100, i);
-			//m_renderer.setPixel(greenPixel, j + 150, i);
-			//m_renderer.setPixel({ U8(i), U8(j), U8(U8(i) + U8(j) / 2) }, i, j);
 		}
 	}
+	m_regenerateImage = false;
+}
+
+void Canvas::paintWindow()
+{
+	if (m_regenerateImage)
+		generateImage();
 	m_renderer.render();
 }
 
@@ -132,6 +129,7 @@ void Canvas::reSeedChoices()
 		}
 	}
 	InvalidateRgn(m_windowHandle, NULL, TRUE);
+	m_regenerateImage = true;
 }
 
 bool Canvas::initRenderer()
@@ -158,6 +156,7 @@ void Canvas::rightClick()
 			m_renderer.setPixel(pixel, j, i);
 		}
 	}
+	InvalidateRgn(m_windowHandle, NULL, TRUE);
 }
 
 bool Canvas::registerWindowClass(HINSTANCE hInstance)
