@@ -13,7 +13,6 @@ private:
 
 	// used by getRandExpression & getRandFilter
 	unsigned int m_choices[3][3]{};
-
 public:
 	Canvas();
 	bool initialize(HINSTANCE hInstance, int nShowCmd);
@@ -26,7 +25,8 @@ private:
 
 	bool initRenderer();
 	void paintWindow();
-	void click();
+	void leftClick();
+	void rightClick();
 
 	// WinAPI wrapper functions
 	bool registerWindowClass(HINSTANCE hInstance);

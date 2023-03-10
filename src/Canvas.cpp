@@ -6,8 +6,8 @@
 template <typename T>
 constexpr uint8_t toU8(T n) { return static_cast<uint8_t>(n); }
 
-constexpr unsigned int CBUFFER_WIDTH{ 512 };
-constexpr unsigned int CBUFFER_HEIGHT{ 512 };
+constexpr unsigned int CBUFFER_WIDTH{ 960 };
+constexpr unsigned int CBUFFER_HEIGHT{ 540 };
 
 constexpr float CDIVISOR_WIDTH{ static_cast<float>(CBUFFER_WIDTH) / 255 };
 constexpr float CDIVISOR_HEIGHT{ static_cast<float>(CBUFFER_HEIGHT) / 255 };
@@ -141,9 +141,22 @@ bool Canvas::initRenderer()
 	return true;
 }
 
-void Canvas::click()
+void Canvas::leftClick()
 {
 	reSeedChoices();
+}
+
+void Canvas::rightClick()
+{
+	for (unsigned int i{ 0 }; i < m_renderer.m_bufferdims.width; i++)
+	{
+		for (unsigned int j{ 0 }; j < m_renderer.m_bufferdims.height; j++)
+		{
+			Pixel pixel{ m_renderer.getPixel(j, i) };
+			pixel.invert();
+			m_renderer.setPixel(pixel, j, i);
+		}
+	}
 }
 
 bool Canvas::registerWindowClass(HINSTANCE hInstance)
@@ -235,7 +248,10 @@ LRESULT CALLBACK Canvas::windowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPA
 		canvas->paintWindow();
 		break;
 	case WM_LBUTTONDOWN:
-		canvas->click();
+		canvas->leftClick();
+		break;
+	case WM_RBUTTONDOWN:
+		canvas->rightClick();
 		break;
 	case WM_CLOSE:
 		DestroyWindow(hWnd);
