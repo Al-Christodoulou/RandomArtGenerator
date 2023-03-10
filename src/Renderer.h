@@ -11,6 +11,7 @@ class Renderer
 {
 private:
 	HBITMAP m_hBitmap{ nullptr };
+	BITMAPINFO m_bitmapInfo{};
 	RGBQUAD* m_bitmapData{ nullptr };
 	HWND m_attachedWndHandle{ nullptr };
 

@@ -20,11 +20,15 @@ void Renderer::initBitmap()
 
 	// BITMAPINFO contains a BITMAPINFOHEADER and a RGBQUAD, but the latter isn't
 	// really needed, so we just do a pointer cast to bypass it
-	BITMAPINFO bmpInfo{ *reinterpret_cast<LPBITMAPINFO>(&bmpInfoHdr) };
+	m_bitmapInfo = *reinterpret_cast<LPBITMAPINFO>(&bmpInfoHdr);
 
-	/*m_hBitmap = CreateDIBSection(
-		hdc
-	)*/
+	HDC hdc{ GetDC(nullptr) };
+
+	m_hBitmap = CreateDIBSection(
+		hdc, &m_bitmapInfo, DIB_RGB_COLORS, reinterpret_cast<void**>(&m_bitmapData), nullptr, 0
+	);
+
+	ReleaseDC(nullptr, hdc);
 }
 
 Renderer::Renderer(HWND hWnd, unsigned int buffer_width, unsigned int buffer_height)
@@ -44,5 +48,16 @@ void Renderer::render()
 {
 	PAINTSTRUCT ps;
 	HDC hdc{ BeginPaint(m_attachedWndHandle, &ps) };
+
+	if (hdc)
+	{
+		RECT winRect{};
+		GetClientRect(m_attachedWndHandle, &winRect);
+		StretchDIBits(hdc, 0, 0, winRect.right, winRect.bottom, 0, 0,
+			m_bufferdims.width, m_bufferdims.height,
+			m_bitmapData, &m_bitmapInfo, DIB_RGB_COLORS, SRCCOPY
+		);
+	}
+
 	EndPaint(m_attachedWndHandle, &ps);
 }
