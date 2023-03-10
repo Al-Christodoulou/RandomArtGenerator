@@ -5,6 +5,8 @@
 struct Pixel
 {
 	uint8_t red{}, green{}, blue{};
+
+	void invert() { red = ~red; green = ~green; blue = ~blue; }
 };
 
 class Renderer
@@ -22,6 +24,7 @@ public:
 	Renderer(HWND hWnd, unsigned int buffer_width, unsigned int buffer_height);
 	Renderer(Renderer&&) noexcept;
 	void setPixel(const Pixel& pixel, unsigned int row, unsigned int column);
+	Pixel getPixel(unsigned int row, unsigned int column);
 	void render();
 	void attachWindowHandle(HWND hWnd);
 

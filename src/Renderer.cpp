@@ -60,6 +60,15 @@ void Renderer::setPixel(const Pixel& pixel, unsigned int row, unsigned int colum
 	}
 }
 
+Pixel Renderer::getPixel(unsigned int row, unsigned int column)
+{
+	return Pixel{
+		m_bitmapData[column + row * m_bufferdims.width].rgbRed,
+		m_bitmapData[column + row * m_bufferdims.width].rgbGreen,
+		m_bitmapData[column + row * m_bufferdims.width].rgbBlue,
+	};
+}
+
 void Renderer::render()
 {
 	PAINTSTRUCT ps;
