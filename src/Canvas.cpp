@@ -102,11 +102,11 @@ unsigned int Canvas::getRandFilter(unsigned int input, unsigned int choiceIndex,
 	case 0:
 		return input;
 	case 1:
-		return sqrt(input);
+		return static_cast<unsigned int>(sqrt(input));
 	case 2:
-		return log(input);
+		return static_cast<unsigned int>(log(input));
 	case 3:
-		return log10(input);
+		return static_cast<unsigned int>(log10(input));
 	case 4:
 		return input * input;
 	default: // shouldn't happen
