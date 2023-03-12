@@ -1,5 +1,6 @@
 #include "Renderer.h"
-
+#include <xmmintrin.h>
+#include <smmintrin.h>
 
 Renderer::Renderer(HWND hWnd, unsigned int buffer_width, unsigned int buffer_height)
 	: m_bufferdims{ buffer_width, buffer_height }, m_attachedWndHandle{ hWnd }
@@ -72,6 +73,31 @@ Pixel Renderer::getPixel(unsigned int row, unsigned int column)
 		m_bitmapData[column + row * m_bufferdims.width].rgbGreen,
 		m_bitmapData[column + row * m_bufferdims.width].rgbBlue,
 	};
+}
+
+void Renderer::invertAllPixels()
+{
+#if 0
+	for (int i{ 0 }; i < m_bufferdims.width * m_bufferdims.height; i++)
+	{
+		m_bitmapData[i].rgbRed = ~m_bitmapData[i].rgbRed;
+		m_bitmapData[i].rgbGreen = ~m_bitmapData[i].rgbGreen;
+		m_bitmapData[i].rgbBlue = ~m_bitmapData[i].rgbBlue;
+	}
+#elif 0
+	for (int i{ 0 }; i < m_bufferdims.width * m_bufferdims.height; i++)
+	{
+		*(int*)(m_bitmapData + i) = ~*(int*)(m_bitmapData + i) & 0x00FFFFFF;
+	}
+#else
+	for (unsigned int i{ 0 }; i < m_bufferdims.width * m_bufferdims.height; i += 4)
+	{
+		__m128i reg1{ _mm_loadu_si128((__m128i*)(m_bitmapData + i)) };
+		__m128i reg2{ _mm_set_epi32(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF) };
+		reg1 = _mm_xor_si128(reg1, reg2);
+		_mm_storeu_si128((__m128i*)(m_bitmapData + i), reg1);
+	}
+#endif
 }
 
 void Renderer::render()

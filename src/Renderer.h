@@ -26,6 +26,7 @@ public:
 	~Renderer();
 	void setPixel(const Pixel& pixel, unsigned int row, unsigned int column);
 	Pixel getPixel(unsigned int row, unsigned int column);
+	void invertAllPixels();
 	void render();
 	void attachWindowHandle(HWND hWnd);
 
