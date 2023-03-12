@@ -19,6 +19,11 @@ Renderer::Renderer(Renderer&& renderer) noexcept
 	renderer.m_attachedWndHandle = nullptr;
 }
 
+Renderer::~Renderer()
+{
+	DeleteObject(m_hBitmap);
+}
+
 void Renderer::initBitmap()
 {
 	BITMAPINFOHEADER bmpInfoHdr{};
