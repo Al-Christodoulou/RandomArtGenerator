@@ -147,15 +147,7 @@ void Canvas::leftClick()
 
 void Canvas::rightClick()
 {
-	for (unsigned int i{ 0 }; i < m_renderer.m_bufferdims.width; i++)
-	{
-		for (unsigned int j{ 0 }; j < m_renderer.m_bufferdims.height; j++)
-		{
-			Pixel pixel{ m_renderer.getPixel(j, i) };
-			pixel.invert();
-			m_renderer.setPixel(pixel, j, i);
-		}
-	}
+	m_renderer.invertAllPixels();
 	InvalidateRgn(m_windowHandle, NULL, TRUE);
 }
 

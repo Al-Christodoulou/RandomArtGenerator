@@ -1,6 +1,5 @@
 #include "Renderer.h"
 
-
 Renderer::Renderer(HWND hWnd, unsigned int buffer_width, unsigned int buffer_height)
 	: m_bufferdims{ buffer_width, buffer_height }, m_attachedWndHandle{ hWnd }
 {
@@ -72,6 +71,17 @@ Pixel Renderer::getPixel(unsigned int row, unsigned int column)
 		m_bitmapData[column + row * m_bufferdims.width].rgbGreen,
 		m_bitmapData[column + row * m_bufferdims.width].rgbBlue,
 	};
+}
+
+void Renderer::invertAllPixels()
+{
+	for (unsigned int i{ 0 }; i < m_bufferdims.width * m_bufferdims.height; i++)
+	{
+		int* pixelInt{ reinterpret_cast<int*>(m_bitmapData + i) };
+		// invert all the bits in the RGBQUAD, except rgbReserved, which
+		// should not be touched (and is always 0)
+		*pixelInt = ~*pixelInt & 0x00FFFFFF;
+	}
 }
 
 void Renderer::render()
