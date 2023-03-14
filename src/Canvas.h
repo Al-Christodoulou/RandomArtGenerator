@@ -29,6 +29,7 @@ private:
 	void paintWindow();
 	void leftClick();
 	void rightClick();
+	void FKeyPress();
 
 	// WinAPI wrapper functions
 	bool registerWindowClass(HINSTANCE hInstance);

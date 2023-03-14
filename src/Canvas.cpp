@@ -1,4 +1,5 @@
 #include <cmath>
+#include <string>
 #include "Random.h"
 #include "Canvas.h"
 
@@ -151,6 +152,73 @@ void Canvas::rightClick()
 	InvalidateRgn(m_windowHandle, NULL, TRUE);
 }
 
+void Canvas::FKeyPress()
+{
+	if (GetAsyncKeyState(L'F') & 0x8000)
+	{
+		std::wstring message{};
+		message.reserve(60);
+
+		// in m_choices[I][x], I is the pixel index:
+		// 0 == red, 1 == green, 2 == blue
+		switch (m_choices[0][1])
+		{
+		case 0:
+			message.append(L"X ");
+			break;
+		case 1:
+			message.append(L"Sqrt(X) ");
+			break;
+		case 2:
+			message.append(L"Log(X) ");
+			break;
+		case 3:
+			message.append(L"Log10(X) ");
+			break;
+		case 4:
+			message.append(L"X * X ");
+			break;
+		}
+
+		switch (m_choices[0][0])
+		{
+		case 0:
+			message.append(L"+ ");
+			break;
+		case 1:
+			message.append(L"- ");
+			break;
+		case 2:
+			message.append(L"* ");
+			break;
+		case 3:
+			message.append(L"/ ");
+			break;
+		}
+
+		switch (m_choices[0][2])
+		{
+		case 0:
+			message.append(L"Y");
+			break;
+		case 1:
+			message.append(L"Sqrt(Y)");
+			break;
+		case 2:
+			message.append(L"Log(Y)");
+			break;
+		case 3:
+			message.append(L"Log10(Y)");
+			break;
+		case 4:
+			message.append(L"Y * Y");
+			break;
+		}
+
+		MessageBox(m_windowHandle, message.c_str(), NULL, NULL);
+	}
+}
+
 bool Canvas::registerWindowClass(HINSTANCE hInstance)
 {
 	WNDCLASSEX wc;
@@ -248,6 +316,10 @@ LRESULT CALLBACK Canvas::windowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPA
 		break;
 	case WM_RBUTTONDOWN:
 		canvas->rightClick();
+		break;
+	case WM_KEYDOWN:
+		if (wParam == 0x46 /* F */)
+			canvas->FKeyPress();
 		break;
 	case WM_CLOSE:
 		DestroyWindow(hWnd);
