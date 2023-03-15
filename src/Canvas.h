@@ -48,7 +48,7 @@ private:
 	void paintWindow();
 	void leftClick();
 	void rightClick();
-	void constructFormulaString(std::wstring&, unsigned int pixelIndex);
+	void constructFormulaString(std::wstring&, ColorIndex colorIndex);
 	void FKeyPress();
 
 	// WinAPI wrapper functions

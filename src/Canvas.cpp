@@ -151,17 +151,17 @@ void Canvas::rightClick()
 	InvalidateRgn(m_windowHandle, NULL, TRUE);
 }
 
-void Canvas::constructFormulaString(std::wstring& str, unsigned int pixelIndex)
+void Canvas::constructFormulaString(std::wstring& str, ColorIndex colorIndex)
 {
-	switch (pixelIndex)
+	switch (colorIndex)
 	{
-	case 0:
+	case ColorIndex::Red:
 		str.append(L"Red pixel: ");
 		break;
-	case 1:
+	case ColorIndex::Green:
 		str.append(L"Green pixel: ");
 		break;
-	case 2:
+	case ColorIndex::Blue:
 		str.append(L"Blue pixel: ");
 		break;
 	default:
@@ -171,7 +171,7 @@ void Canvas::constructFormulaString(std::wstring& str, unsigned int pixelIndex)
 
 	// in m_choices[I][x], I is the pixel index:
 	// 0 == red, 1 == green, 2 == blue
-	switch (m_choices[pixelIndex][1])
+	switch (m_choices[static_cast<unsigned int>(colorIndex)][1])
 	{
 	case 0:
 		str.append(L"X ");
@@ -190,7 +190,7 @@ void Canvas::constructFormulaString(std::wstring& str, unsigned int pixelIndex)
 		break;
 	}
 
-	switch (m_choices[pixelIndex][0])
+	switch (m_choices[static_cast<unsigned int>(colorIndex)][0])
 	{
 	case 0:
 		str.append(L"+ ");
@@ -206,7 +206,7 @@ void Canvas::constructFormulaString(std::wstring& str, unsigned int pixelIndex)
 		break;
 	}
 
-	switch (m_choices[pixelIndex][2])
+	switch (m_choices[static_cast<unsigned int>(colorIndex)][2])
 	{
 	case 0:
 		str.append(L"Y");
@@ -232,8 +232,9 @@ void Canvas::FKeyPress()
 	std::wstring message{};
 	message.reserve(60);
 
-	for (int i{ 0 }; i <= 2; i++)
-		constructFormulaString(message, i);
+	constructFormulaString(message, ColorIndex::Red);
+	constructFormulaString(message, ColorIndex::Green);
+	constructFormulaString(message, ColorIndex::Blue);
 
 	MessageBox(m_windowHandle, message.c_str(), L"Formula", NULL);
 }
