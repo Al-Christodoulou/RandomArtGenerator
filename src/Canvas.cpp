@@ -229,16 +229,13 @@ void Canvas::constructFormulaString(std::wstring& str, unsigned int pixelIndex)
 
 void Canvas::FKeyPress()
 {
-	if (GetAsyncKeyState(L'F') & 0x8000)
-	{
-		std::wstring message{};
-		message.reserve(60);
+	std::wstring message{};
+	message.reserve(60);
 
-		for (int i{ 0 }; i <= 2; i++)
-			constructFormulaString(message, i);
+	for (int i{ 0 }; i <= 2; i++)
+		constructFormulaString(message, i);
 
-		MessageBox(m_windowHandle, message.c_str(), L"Formula", NULL);
-	}
+	MessageBox(m_windowHandle, message.c_str(), L"Formula", NULL);
 }
 
 bool Canvas::registerWindowClass(HINSTANCE hInstance)
