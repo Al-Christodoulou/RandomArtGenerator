@@ -238,7 +238,7 @@ void Canvas::FKeyPress()
 		for (int i{ 0 }; i <= 2; i++)
 			constructFormulaString(message, i);
 
-		MessageBox(m_windowHandle, message.c_str(), NULL, NULL);
+		MessageBox(m_windowHandle, message.c_str(), L"Formula", NULL);
 	}
 }
 
