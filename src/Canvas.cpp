@@ -49,9 +49,9 @@ void Canvas::generateImage()
 		for (unsigned int j{ 0 }; j < m_renderer.m_bufferdims.height; j++)
 		{
 			Pixel pixel{
-				toU8(getRandExpression(i, j, 0)),
-				toU8(getRandExpression(i, j, 1)),
-				toU8(getRandExpression(i, j, 2))
+				toU8(getRandExpression(i, j, ColorIndex::Red)),
+				toU8(getRandExpression(i, j, ColorIndex::Green)),
+				toU8(getRandExpression(i, j, ColorIndex::Blue))
 			};
 			m_renderer.setPixel(pixel, j, i);
 		}
@@ -70,11 +70,11 @@ void Canvas::paintWindow()
 // parameters are passed through a random filter. the ends
 // results can look like:
 // i * sqrt(j), sqrt(i) * log(j), i * j * j, etc.
-unsigned int Canvas::getRandExpression(unsigned int i, unsigned int j, unsigned int colorIndex)
+unsigned int Canvas::getRandExpression(unsigned int i, unsigned int j, ColorIndex colorIndex)
 {
 	unsigned int filteredI{ getRandFilter(i, colorIndex, 1) };
 	unsigned int filteredJ{ getRandFilter(j, colorIndex, 2) };
-	switch (m_choices[colorIndex][0])
+	switch (m_choices[static_cast<unsigned int>(colorIndex)][0])
 	{
 	case 0:
 		return filteredI + filteredJ;
@@ -95,10 +95,9 @@ unsigned int Canvas::getRandExpression(unsigned int i, unsigned int j, unsigned 
 // receives an int and returns a random filter passed through it,
 // such as the square root of input, the logarithm, the input
 // squared and so on
-unsigned int Canvas::getRandFilter(unsigned int input, unsigned int colorIndex, unsigned int secondIndex)
+unsigned int Canvas::getRandFilter(unsigned int input, ColorIndex colorIndex, unsigned int secondIndex)
 {
-	//unsigned int choice{ static_cast<unsigned int>(Random::get(0, 4)) };
-	switch (m_choices[colorIndex][secondIndex])
+	switch (m_choices[static_cast<unsigned int>(colorIndex)][secondIndex])
 	{
 	case 0:
 		return input;
