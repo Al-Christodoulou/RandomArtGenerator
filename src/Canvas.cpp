@@ -152,6 +152,82 @@ void Canvas::rightClick()
 	InvalidateRgn(m_windowHandle, NULL, TRUE);
 }
 
+void Canvas::constructFormulaString(std::wstring& str, unsigned int pixelIndex)
+{
+	switch (pixelIndex)
+	{
+	case 0:
+		str.append(L"Red pixel: ");
+		break;
+	case 1:
+		str.append(L"Green pixel: ");
+		break;
+	case 2:
+		str.append(L"Blue pixel: ");
+		break;
+	default:
+		str.append(L"ERROR: Garbage pixel index!");
+		return;
+	}
+
+	// in m_choices[I][x], I is the pixel index:
+	// 0 == red, 1 == green, 2 == blue
+	switch (m_choices[pixelIndex][1])
+	{
+	case 0:
+		str.append(L"X ");
+		break;
+	case 1:
+		str.append(L"Sqrt(X) ");
+		break;
+	case 2:
+		str.append(L"Log(X) ");
+		break;
+	case 3:
+		str.append(L"Log10(X) ");
+		break;
+	case 4:
+		str.append(L"X * X ");
+		break;
+	}
+
+	switch (m_choices[pixelIndex][0])
+	{
+	case 0:
+		str.append(L"+ ");
+		break;
+	case 1:
+		str.append(L"- ");
+		break;
+	case 2:
+		str.append(L"* ");
+		break;
+	case 3:
+		str.append(L"/ ");
+		break;
+	}
+
+	switch (m_choices[pixelIndex][2])
+	{
+	case 0:
+		str.append(L"Y");
+		break;
+	case 1:
+		str.append(L"Sqrt(Y)");
+		break;
+	case 2:
+		str.append(L"Log(Y)");
+		break;
+	case 3:
+		str.append(L"Log10(Y)");
+		break;
+	case 4:
+		str.append(L"Y * Y");
+		break;
+	}
+	str.append(L"\n");
+}
+
 void Canvas::FKeyPress()
 {
 	if (GetAsyncKeyState(L'F') & 0x8000)
@@ -159,61 +235,8 @@ void Canvas::FKeyPress()
 		std::wstring message{};
 		message.reserve(60);
 
-		// in m_choices[I][x], I is the pixel index:
-		// 0 == red, 1 == green, 2 == blue
-		switch (m_choices[0][1])
-		{
-		case 0:
-			message.append(L"X ");
-			break;
-		case 1:
-			message.append(L"Sqrt(X) ");
-			break;
-		case 2:
-			message.append(L"Log(X) ");
-			break;
-		case 3:
-			message.append(L"Log10(X) ");
-			break;
-		case 4:
-			message.append(L"X * X ");
-			break;
-		}
-
-		switch (m_choices[0][0])
-		{
-		case 0:
-			message.append(L"+ ");
-			break;
-		case 1:
-			message.append(L"- ");
-			break;
-		case 2:
-			message.append(L"* ");
-			break;
-		case 3:
-			message.append(L"/ ");
-			break;
-		}
-
-		switch (m_choices[0][2])
-		{
-		case 0:
-			message.append(L"Y");
-			break;
-		case 1:
-			message.append(L"Sqrt(Y)");
-			break;
-		case 2:
-			message.append(L"Log(Y)");
-			break;
-		case 3:
-			message.append(L"Log10(Y)");
-			break;
-		case 4:
-			message.append(L"Y * Y");
-			break;
-		}
+		for (int i{ 0 }; i <= 2; i++)
+			constructFormulaString(message, i);
 
 		MessageBox(m_windowHandle, message.c_str(), NULL, NULL);
 	}

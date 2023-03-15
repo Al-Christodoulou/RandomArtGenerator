@@ -1,5 +1,6 @@
 #pragma once
 #include <Windows.h>
+#include <string>
 #include "Renderer.h"
 
 class Canvas
@@ -29,6 +30,7 @@ private:
 	void paintWindow();
 	void leftClick();
 	void rightClick();
+	void constructFormulaString(std::wstring&, unsigned int pixelIndex);
 	void FKeyPress();
 
 	// WinAPI wrapper functions
