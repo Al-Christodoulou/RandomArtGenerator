@@ -70,11 +70,11 @@ void Canvas::paintWindow()
 // parameters are passed through a random filter. the ends
 // results can look like:
 // i * sqrt(j), sqrt(i) * log(j), i * j * j, etc.
-unsigned int Canvas::getRandExpression(unsigned int i, unsigned int j, unsigned int choiceIndex)
+unsigned int Canvas::getRandExpression(unsigned int i, unsigned int j, unsigned int colorIndex)
 {
-	unsigned int filteredI{ getRandFilter(i, choiceIndex, 1) };
-	unsigned int filteredJ{ getRandFilter(j, choiceIndex, 2) };
-	switch (m_choices[choiceIndex][0])
+	unsigned int filteredI{ getRandFilter(i, colorIndex, 1) };
+	unsigned int filteredJ{ getRandFilter(j, colorIndex, 2) };
+	switch (m_choices[colorIndex][0])
 	{
 	case 0:
 		return filteredI + filteredJ;
@@ -95,10 +95,10 @@ unsigned int Canvas::getRandExpression(unsigned int i, unsigned int j, unsigned 
 // receives an int and returns a random filter passed through it,
 // such as the square root of input, the logarithm, the input
 // squared and so on
-unsigned int Canvas::getRandFilter(unsigned int input, unsigned int choiceIndex, unsigned int secondIndex)
+unsigned int Canvas::getRandFilter(unsigned int input, unsigned int colorIndex, unsigned int secondIndex)
 {
 	//unsigned int choice{ static_cast<unsigned int>(Random::get(0, 4)) };
-	switch (m_choices[choiceIndex][secondIndex])
+	switch (m_choices[colorIndex][secondIndex])
 	{
 	case 0:
 		return input;

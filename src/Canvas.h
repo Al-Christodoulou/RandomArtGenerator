@@ -21,8 +21,8 @@ public:
 	void beginDrawing();
 
 private:
-	unsigned int getRandExpression(unsigned int i, unsigned int j, unsigned int choiceIndex);
-	unsigned int getRandFilter(unsigned int input, unsigned int choiceIndex, unsigned int secondIndex);
+	unsigned int getRandExpression(unsigned int i, unsigned int j, unsigned int colorIndex);
+	unsigned int getRandFilter(unsigned int input, unsigned int colorIndex, unsigned int secondIndex);
 	void reSeedChoices();
 
 	bool initRenderer();
