@@ -21,10 +21,10 @@ private:
 	};
 
 	/*
-	* m_choices is a random lookup table, updated by reSeedChoices, and it's used
+	* m_choices is a random lookup table, updated by reSeedChoices(), and it's used
 	* to randomly generate the image. it's a 3x3 array, containing the following
 	* content:
-	*   +------------- 0 -----------------+---------------- 1 ------------------+---------------- 2 ------------------+
+	*   +------------- 0 -----------------+----------------- 1 ------------------+----------------- 2 ----------------+
 	* 0 | <Red pixel random expression>   | <Red pixel random É filter value>   | <Red pixel random J filter value>   |
 	* 1 | <Green pixel random expression> | <Green pixel random É filter value> | <Green pixel random J filter value> |
 	* 2 | <Blue pixel random expression>  | <Blue pixel random É filter value>  | <Blue pixel random J filter value>  |
