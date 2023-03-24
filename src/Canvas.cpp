@@ -267,6 +267,9 @@ bool Canvas::createWindow(HINSTANCE hInstance)
 	m_windowHandle = CreateWindowEx(WS_EX_CLIENTEDGE, cWndClassName,
 		L"Random Art Generator", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1024,
 		576, NULL, NULL, hInstance, reinterpret_cast<LPVOID>(this));
+	// for some reason the window name parameter above doesn't seem to work, so i have to
+	// use SetWindowText to actually change the window title
+	SetWindowText(m_windowHandle, L"Random Art Generator");
 
 	if (m_windowHandle == nullptr)
 		return false;
