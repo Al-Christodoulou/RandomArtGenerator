@@ -30,9 +30,7 @@ bool Canvas::initialize(HINSTANCE hInstance, int nShowCmd)
 		return false;
 	}
 	m_nShowCmd = nShowCmd;
-	m_successfully_initialized = true;
-	if (!initRenderer())
-		return false;
+	initRenderer();
 	return true;
 }
 
@@ -132,12 +130,9 @@ void Canvas::reSeedChoices()
 	m_regenerateImage = true;
 }
 
-bool Canvas::initRenderer()
+void Canvas::initRenderer()
 {
-	if (!m_successfully_initialized)
-		return false;
 	m_renderer.attachWindowHandle(m_windowHandle);
-	return true;
 }
 
 void Canvas::leftClick()

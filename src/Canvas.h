@@ -6,7 +6,6 @@
 class Canvas
 {
 private:
-	bool m_successfully_initialized{ false };
 	HWND m_windowHandle{ nullptr };
 	static constexpr inline LPCWSTR cWndClassName{ L"CanvasWindow" };
 	int m_nShowCmd{};
@@ -43,7 +42,7 @@ private:
 	unsigned int getRandFilter(unsigned int input, ColorIndex colorIndex, unsigned int secondIndex);
 	void reSeedChoices();
 
-	bool initRenderer();
+	void initRenderer();
 	void generateImage();
 	void paintWindow();
 	void leftClick();
