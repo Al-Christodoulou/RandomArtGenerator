@@ -1,9 +1,15 @@
 #include "Renderer.h"
 
-Renderer::Renderer(HWND hWnd, unsigned int buffer_width, unsigned int buffer_height)
-	: m_bufferdims{ buffer_width, buffer_height }, m_attachedWndHandle{ hWnd }
+Renderer::Renderer(unsigned int buffer_width, unsigned int buffer_height)
+	: m_bufferdims{ buffer_width, buffer_height }
 {
 	initBitmap();
+}
+
+Renderer::Renderer(HWND hWnd, unsigned int buffer_width, unsigned int buffer_height)
+	: Renderer(buffer_width, buffer_height)
+{
+	m_attachedWndHandle = hWnd;
 }
 
 Renderer::~Renderer()

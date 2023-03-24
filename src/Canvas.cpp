@@ -14,7 +14,7 @@ constexpr float CDIVISOR_WIDTH{ static_cast<float>(CBUFFER_WIDTH) / 255 };
 constexpr float CDIVISOR_HEIGHT{ static_cast<float>(CBUFFER_HEIGHT) / 255 };
 
 Canvas::Canvas()
-	: m_renderer{ nullptr, CBUFFER_WIDTH, CBUFFER_HEIGHT }
+	: m_renderer{ CBUFFER_WIDTH, CBUFFER_HEIGHT }
 {}
 
 bool Canvas::initialize(HINSTANCE hInstance, int nShowCmd)
