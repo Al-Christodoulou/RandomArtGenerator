@@ -6,18 +6,6 @@ Renderer::Renderer(HWND hWnd, unsigned int buffer_width, unsigned int buffer_hei
 	initBitmap();
 }
 
-Renderer::Renderer(Renderer&& renderer) noexcept
-	: m_bufferdims{ renderer.m_bufferdims }
-{
-	m_hBitmap = renderer.m_hBitmap;
-	renderer.m_hBitmap = nullptr;
-	m_bitmapInfo = renderer.m_bitmapInfo;
-	m_bitmapData = renderer.m_bitmapData;
-	renderer.m_bitmapData = nullptr;
-	m_attachedWndHandle = renderer.m_attachedWndHandle;
-	renderer.m_attachedWndHandle = nullptr;
-}
-
 Renderer::~Renderer()
 {
 	DeleteObject(m_hBitmap);
