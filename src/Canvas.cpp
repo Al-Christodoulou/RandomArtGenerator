@@ -1,17 +1,14 @@
 #include <cmath>
+#include <stdint.h>
 #include <string>
 #include "Random.h"
 #include "Canvas.h"
 
-//#define U8(n) static_cast<uint8_t>(n)
 template <typename T>
 constexpr uint8_t toU8(T n) { return static_cast<uint8_t>(n); }
 
 constexpr unsigned int CBUFFER_WIDTH{ 960 };
 constexpr unsigned int CBUFFER_HEIGHT{ 540 };
-
-constexpr float CDIVISOR_WIDTH{ static_cast<float>(CBUFFER_WIDTH) / 255 };
-constexpr float CDIVISOR_HEIGHT{ static_cast<float>(CBUFFER_HEIGHT) / 255 };
 
 Canvas::Canvas()
 	: m_renderer{ CBUFFER_WIDTH, CBUFFER_HEIGHT }
@@ -64,10 +61,11 @@ void Canvas::paintWindow()
 	m_renderer.render();
 }
 
-// receives i,j and returns a random expression after the two
-// parameters are passed through a random filter. the ends
-// results can look like:
+// receives i,j and returns a random expression after the two parameters
+// are passed through a random filter. the end results can look like:
 // i * sqrt(j), sqrt(i) * log(j), i * j * j, etc.
+// the colorIndex parameter is used to get the correct (random) choice
+// through m_choices. same goes for getRandFilter
 unsigned int Canvas::getRandExpression(unsigned int i, unsigned int j, ColorIndex colorIndex)
 {
 	unsigned int filteredI{ getRandFilter(i, colorIndex, 1) };
@@ -112,6 +110,8 @@ unsigned int Canvas::getRandFilter(unsigned int input, ColorIndex colorIndex, un
 	}
 }
 
+// updates m_choices with new, random choices, used for generating a new image
+// also forces the window to be refreshed so the changes can actually be seen
 void Canvas::reSeedChoices()
 {
 	for (int i{ 0 }; i < 3; i++)
@@ -272,12 +272,13 @@ bool Canvas::createWindow(HINSTANCE hInstance)
 	m_windowHandle = CreateWindowEx(WS_EX_CLIENTEDGE, cWndClassName,
 		L"Random Art Generator", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 1024,
 		576, NULL, NULL, hInstance, reinterpret_cast<LPVOID>(this));
+	if (m_windowHandle == nullptr)
+		return false;
+
 	// for some reason the window name parameter above doesn't seem to work, so i have to
 	// use SetWindowText to actually change the window title
 	SetWindowText(m_windowHandle, L"Random Art Generator");
 
-	if (m_windowHandle == nullptr)
-		return false;
 	return true;
 }
 
@@ -300,7 +301,8 @@ LRESULT CALLBACK Canvas::windowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPA
 {
 	Canvas* canvas{ nullptr };
 
-	// WM_NCCREATE is a message that comes just before WM_CREATE
+	// WM_NCCREATE is a message that comes just before WM_CREATE. this code is run when the
+	// window's being created by CreateWindowEx
 	if (msg == WM_NCCREATE)
 	{
 		CREATESTRUCT* createstruct{ reinterpret_cast<CREATESTRUCT*>(lParam) };

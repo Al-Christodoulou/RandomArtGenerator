@@ -71,6 +71,7 @@ void Renderer::invertAllPixels()
 {
 	for (unsigned int i{ 0 }; i < m_bufferdims.width * m_bufferdims.height; i++)
 	{
+		// this works nicely because sizeof(RGBQUAD) == sizeof(int)
 		int* pixelInt{ reinterpret_cast<int*>(m_bitmapData + i) };
 		// invert all the bits in the RGBQUAD, except rgbReserved, which
 		// should not be touched (and is always 0)
@@ -85,6 +86,8 @@ void Renderer::render()
 
 	if (hdc)
 	{
+		// in order for the pixel data to get stretched, we need the
+		// window rectangle size
 		RECT winRect{};
 		GetClientRect(m_attachedWndHandle, &winRect);
 		StretchDIBits(hdc, 0, 0, winRect.right, winRect.bottom, 0, 0,
