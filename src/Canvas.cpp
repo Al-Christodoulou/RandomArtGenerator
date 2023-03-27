@@ -292,8 +292,6 @@ UINT_PTR Canvas::runMessageLoop(int nShowCmd)
 		TranslateMessage(&msg);
 		// calls windowProcedure behind the scenes
 		DispatchMessage(&msg);
-		// forces the window to be re-drawn, sending a WM_PAINT event
-		//RedrawWindow(m_windowHandle, NULL, NULL, RDW_INVALIDATE);
 	}
 	return msg.wParam;
 }
