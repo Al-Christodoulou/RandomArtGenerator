@@ -126,7 +126,7 @@ void Canvas::reSeedChoices()
 				m_choices[i][j] = static_cast<unsigned int>(Random::get(0, 4));
 		}
 	}
-	InvalidateRgn(m_windowHandle, NULL, TRUE);
+	refreshWindow();
 	m_regenerateImage = true;
 }
 
@@ -143,7 +143,7 @@ void Canvas::leftClick()
 void Canvas::rightClick()
 {
 	m_renderer.invertAllPixels();
-	InvalidateRgn(m_windowHandle, NULL, TRUE);
+	refreshWindow();
 }
 
 void Canvas::constructFormulaString(std::wstring& str, ColorIndex colorIndex)
@@ -232,6 +232,11 @@ void Canvas::FKeyPress()
 	constructFormulaString(message, ColorIndex::Blue);
 
 	MessageBox(m_windowHandle, message.c_str(), L"Formula", NULL);
+}
+
+void Canvas::refreshWindow()
+{
+	InvalidateRgn(m_windowHandle, NULL, TRUE);
 }
 
 bool Canvas::registerWindowClass(HINSTANCE hInstance)
@@ -327,7 +332,7 @@ LRESULT CALLBACK Canvas::windowProcedure(HWND hWnd, UINT msg, WPARAM wParam, LPA
 		break;
 	case WM_SIZE:
 	case WM_SIZING:
-		InvalidateRgn(canvas->m_windowHandle, NULL, TRUE);
+		canvas->refreshWindow();
 		break;
 	case WM_LBUTTONDOWN:
 		canvas->leftClick();

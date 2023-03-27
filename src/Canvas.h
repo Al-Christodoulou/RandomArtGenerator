@@ -49,6 +49,7 @@ private:
 	void rightClick();
 	void constructFormulaString(std::wstring&, ColorIndex colorIndex);
 	void FKeyPress();
+	void refreshWindow();
 
 	// WinAPI wrapper functions
 	bool registerWindowClass(HINSTANCE hInstance);
