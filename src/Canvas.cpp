@@ -3,6 +3,7 @@
 #include <string>
 #include "Random.h"
 #include "Canvas.h"
+#include "resource.h"
 
 template <typename T>
 constexpr uint8_t toU8(T n) { return static_cast<uint8_t>(n); }
@@ -250,12 +251,13 @@ bool Canvas::registerWindowClass(HINSTANCE hInstance)
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hInstance = hInstance;
-	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
+	wc.hIcon = (HICON)LoadImage(hInstance, MAKEINTRESOURCE(IDI_ICON), IMAGE_ICON, 32, 32, LR_DEFAULTCOLOR);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)(COLOR_WINDOWFRAME);
 	wc.lpszMenuName = NULL;
 	wc.lpszClassName = cWndClassName;
-	wc.hIconSm = LoadIcon(NULL, IDI_APPLICATION);
+	// despite everything i've tried, the small icon doesn't work
+	wc.hIconSm = NULL;
 
 	if (!RegisterClassEx(&wc))
 		return false;

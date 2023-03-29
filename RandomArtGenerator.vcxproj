@@ -168,6 +168,14 @@
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Canvas.h" />
     <ClInclude Include="src\Random.h" />
+    <ClInclude Include="src\resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="program_icon.ico" />
+    <Image Include="program_iconsm.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
