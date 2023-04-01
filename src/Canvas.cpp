@@ -152,13 +152,13 @@ void Canvas::constructFormulaString(std::wstring& str, ColorIndex colorIndex)
 	switch (colorIndex)
 	{
 	case ColorIndex::Red:
-		str.append(L"Red pixel: ");
+		str.append(L"Red color: ");
 		break;
 	case ColorIndex::Green:
-		str.append(L"Green pixel: ");
+		str.append(L"Green color: ");
 		break;
 	case ColorIndex::Blue:
-		str.append(L"Blue pixel: ");
+		str.append(L"Blue color: ");
 		break;
 	default:
 		str.append(L"ERROR: Garbage pixel index!");
